@@ -1,0 +1,40 @@
+
+
+
+function init(self)
+	self.pie_time = gui.get_node("pie_time")
+
+	self.player_time = 30
+	-- 30s = 360°
+	-- 
+	gui.set_fill_angle(pie_time, 360)
+	
+end
+
+function final(self)
+
+end
+
+function update(self, dt)
+	local angle = (self.player_time * 360) / 30
+	gui.set_fill_angle(self.pie_time, angle)
+end
+
+function on_message(self, message_id, message, sender)
+	if (message_id == hash("player_time")) then
+		self.player_time = message.player_time
+	end
+
+	if (message_id == hash("up_score")) then
+		gui.set_text(gui.get_node("text_score"), message.score_value)
+	end
+	
+end
+
+function on_input(self, action_id, action)
+
+end
+
+function on_reload(self)
+
+end
