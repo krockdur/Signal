@@ -28,6 +28,28 @@ function on_message(self, message_id, message, sender)
 	if (message_id == hash("up_score")) then
 		gui.set_text(gui.get_node("text_score"), message.score_value)
 	end
+
+	if (message_id == hash("player_nb_bombs")) then
+		if (message.player_nb_bombs == 1) then
+			
+			gui.set_visible("#bomb_1", true)
+			gui.set_visible("#bomb_2", false)
+			gui.set_visible("#bomb_3", false)
+			
+		elseif(message.player_nb_bombs == 2) then
+			gui.set_visible("#bomb_1", true)
+			gui.set_visible("#bomb_2", true)
+			gui.set_visible("#bomb_3", false)
+		elseif(message.player_nb_bombs == 3) then
+			gui.set_visible("#bomb_1", true)
+			gui.set_visible("#bomb_2", true)
+			gui.set_visible("#bomb_3", rue)
+		else
+			gui.set_visible("#bomb_1", false)
+			gui.set_visible("#bomb_2", false)
+			gui.set_visible("#bomb_3", false)
+		end
+	end
 	
 end
 

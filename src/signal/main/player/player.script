@@ -14,7 +14,9 @@ function init(self)
 
 	self.number_of_bombs = 3
 
-	
+	-- table to store enemy dead
+	-- this is to check if there is a combo
+	self.enemies_dead_tab = { }
 	
 end
 
@@ -33,7 +35,6 @@ end
 local shot_time = 0
 local life_time = 0
 function fixed_update(self, dt)
-	print(self.time)
 	--
 	shot_time = shot_time + dt
 	--
@@ -59,28 +60,79 @@ function on_message(self, message_id, message, sender)
 	-- message from enemy dead :
 	if (message_id == hash("enemy_destroyed")) then
 		if ( message.type_enemy == config.TYPE_ENEMY_YELLOW) then
+			insert_enemy_in_table(self, "yellow")
 			self.time = self.time + 0.5
 			self.score_value = self.score_value + 1
 		end
 		if ( message.type_enemy == config.TYPE_ENEMY_GREEN) then
+			insert_enemy_in_table(self, "green")
 			self.time = self.time + 1
 			self.score_value = self.score_value + 2
 		end
 		if ( message.type_enemy == config.TYPE_ENEMY_WHITE) then
+			insert_enemy_in_table(self, "white")
 			self.time = self.time + 1.5
 			self.score_value = self.score_value + 3
 		end
 		if ( message.type_enemy == config.TYPE_ENEMY_RED) then
+			insert_enemy_in_table(self, "red")
 			self.time = self.time + 2
 			self.score_value = self.score_value + 4
 		end
 
 		msg.post("/gui#gui", "up_score", {score_value = self.score_value})
-		
+		print("--------------------------------")
+		print (self.enemies_dead_tab[1])
+		print (self.enemies_dead_tab[2])
+		print (self.enemies_dead_tab[3])
+		print (self.enemies_dead_tab[4])
+		print (self.enemies_dead_tab[5])
+		print("--------------------------------")
+		check_if_combo(self)
 	end
 
 	if (message_id == hash("collision_response") and message.other_group == hash("shot_enemy")) then
 		self.time = self.time - 1
+	end
+	
+end
+
+function insert_enemy_in_table(self, color)
+	-- max table lenght = 5
+	-- remove first if too long
+	if #self.enemies_dead_tab == 5 then
+		table.remove(self.enemies_dead_tab, 1)
+	end
+
+	table.insert(self.enemies_dead_tab, color)
+	
+end
+
+function check_if_combo(self)
+	-- combo bomb
+	if( self.enemies_dead_tab[1] == "red" and self.enemies_dead_tab[2] == "white" and self.enemies_dead_tab[3] == "red") then
+			self.number_of_bombs = self.number_of_bombs + 1
+			if self.number_of_bombs > 3 then self.number_of_bombs = 3 end
+			self.enemies_dead_tab = {}
+	elseif( self.enemies_dead_tab[2] == "red" and self.enemies_dead_tab[3] == "white" and self.enemies_dead_tab[4] == "red") then
+			self.number_of_bombs = self.number_of_bombs + 1
+			if self.number_of_bombs > 3 then self.number_of_bombs = 3 end
+			self.enemies_dead_tab = {}
+	elseif( self.enemies_dead_tab[3] == "red" and self.enemies_dead_tab[4] == "white" and self.enemies_dead_tab[5] == "red") then
+			self.number_of_bombs = self.number_of_bombs + 1
+			if self.number_of_bombs > 3 then self.number_of_bombs = 3 end
+			self.enemies_dead_tab = {}
+	end
+
+	-- combo time
+	if( 
+	self.enemies_dead_tab[1] == "yellow" and
+	self.enemies_dead_tab[2] == "green" and
+	self.enemies_dead_tab[3] == "yellow" and
+	self.enemies_dead_tab[4] == "white" and
+	self.enemies_dead_tab[5] == "red") then
+		self.time = 30
+		self.enemies_dead_tab = {}
 	end
 	
 end
@@ -104,14 +156,20 @@ function on_input(self, action_id, action)
 
 	-- if right click then bomb !
 	if(action_id == hash("touch_bomb")) then
-		-- create bomb animation		
-		factory.create("#factory_create_bomb_animation", go.get_position())
-		
-		-- send msg to factory enemy to delete all enemies
-		msg.post("/enemies_pop#pop", "bomb")
-		
-		-- a bomb heal the player
-		self.time = 30
+		if (self.number_of_bombs > 0) then
+			self.number_of_bombs = self.number_of_bombs - 1
+			-- create bomb animation		
+			factory.create("#factory_create_bomb_animation", go.get_position())
+			
+			-- send msg to factory enemy to delete all enemies
+			msg.post("/enemies_pop#pop", "bomb")
+
+			-- update ui
+			msg.post("/gui#gui", "player_nb_bombs", { player_nb_bombs = self.number_of_bombs} )
+			
+			-- a bomb heal the player
+			self.time = 30
+		end
 	end
 	
 end
