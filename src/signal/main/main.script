@@ -1,8 +1,11 @@
 function init(self)
 
+	msg.post(".", "acquire_input_focus")
+	
 	msg.post("/gui#game_gui", "disable")
 	msg.post("/gui#menu_gui", "disable")
 	msg.post("#game_proxy", "load")
+
 	
 end
 

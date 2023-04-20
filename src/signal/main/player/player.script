@@ -2,6 +2,8 @@ local config = require("main.defines")
 
 function init(self)
 
+	print("debug from init player")
+	
 	msg.post(".", "acquire_input_focus")
 
 	self.pos = vmath.vector3(320, 200, 1)
@@ -20,7 +22,7 @@ function init(self)
 
 
 	-- update ui
-	msg.post("/gui#game_gui", "player_nb_bombs", { player_nb_bombs = self.number_of_bombs} )
+	msg.post("main:/gui#game_gui", "player_nb_bombs", { player_nb_bombs = self.number_of_bombs} )
 	
 end
 
@@ -55,7 +57,7 @@ function fixed_update(self, dt)
 	-- decrease life time every 1s
 	if (life_time >= 1) then
 		self.time = self.time - 1
-		msg.post("/gui#game_gui", "player_time", { player_time = self.time } )
+		msg.post("main:/gui#game_gui", "player_time", { player_time = self.time } )
 		life_time = 0
 	end
 
@@ -91,12 +93,12 @@ function on_message(self, message_id, message, sender)
 			self.score_value = self.score_value + 4
 		end
 
-		msg.post("/gui#game_gui", "up_score", {score_value = self.score_value})
+		msg.post("main:/gui#game_gui", "up_score", {score_value = self.score_value})
 		
 		check_if_combo(self)
 
 		-- update ui
-		msg.post("/gui#game_gui", "player_combo_table", { player_combo_table = self.enemies_dead_tab} )
+		msg.post("main:/gui#game_gui", "player_combo_table", { player_combo_table = self.enemies_dead_tab} )
 	end
 
 	if (message_id == hash("collision_response") and message.other_group == hash("shot_enemy")) then
@@ -125,7 +127,7 @@ function check_if_combo(self)
 		if self.number_of_bombs > 3 then self.number_of_bombs = 3 end
 		self.enemies_dead_tab = {}
 		-- update ui
-		msg.post("/gui#game_gui", "player_nb_bombs", { player_nb_bombs = self.number_of_bombs} )
+		msg.post("main:/gui#game_gui", "player_nb_bombs", { player_nb_bombs = self.number_of_bombs} )
 			
 	elseif( self.enemies_dead_tab[2] == "red" and self.enemies_dead_tab[3] == "white" and self.enemies_dead_tab[4] == "red") then
 			
@@ -133,7 +135,7 @@ function check_if_combo(self)
 		if self.number_of_bombs > 3 then self.number_of_bombs = 3 end
 		self.enemies_dead_tab = {}
 		-- update ui
-		msg.post("/gui#game_gui", "player_nb_bombs", { player_nb_bombs = self.number_of_bombs} )
+		msg.post("main:/gui#game_gui", "player_nb_bombs", { player_nb_bombs = self.number_of_bombs} )
 		
 	elseif( self.enemies_dead_tab[3] == "red" and self.enemies_dead_tab[4] == "white" and self.enemies_dead_tab[5] == "red") then
 			
@@ -141,7 +143,7 @@ function check_if_combo(self)
 		if self.number_of_bombs > 3 then self.number_of_bombs = 3 end
 		self.enemies_dead_tab = {}
 		-- update ui
-		msg.post("/gui#game_gui", "player_nb_bombs", { player_nb_bombs = self.number_of_bombs} )
+		msg.post("main:/gui#game_gui", "player_nb_bombs", { player_nb_bombs = self.number_of_bombs} )
 			
 	end
 
@@ -187,7 +189,7 @@ function on_input(self, action_id, action)
 				msg.post("/enemies_pop#pop", "bomb")
 
 				-- update ui
-				msg.post("/gui#game_gui", "player_nb_bombs", { player_nb_bombs = self.number_of_bombs} )
+				msg.post("main:/gui#game_gui", "player_nb_bombs", { player_nb_bombs = self.number_of_bombs} )
 				
 				-- a bomb heal the player
 				self.time = 30
