@@ -4,7 +4,7 @@ function init(self)
 
 	print("debug from init player")
 	
-	msg.post(".", "acquire_input_focus")
+	
 
 	self.pos = vmath.vector3(320, 200, 1)
 	self.agree_to_shoot = true
@@ -28,7 +28,7 @@ end
 
 function final(self)
 
-	msg.post(".", "release_input_focus")	
+	-- msg.post(".", "release_input_focus")	
 end
 
 
@@ -70,6 +70,14 @@ function fixed_update(self, dt)
 end
 
 function on_message(self, message_id, message, sender)
+
+	if (message_id == hash("load_lvl_1")) then
+		print("LOAD LVL 1")
+		msg.post(".", "acquire_input_focus")
+		
+	end
+	
+	
 	-- message from enemy dead :
 	if (message_id == hash("enemy_destroyed")) then
 		if ( message.type_enemy == config.TYPE_ENEMY_YELLOW) then
