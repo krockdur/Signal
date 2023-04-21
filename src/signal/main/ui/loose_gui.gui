@@ -1,4 +1,4 @@
-script: "/main/ui/menu_gui.gui_script"
+script: "/main/ui/loose_gui.gui_script"
 textures {
   name: "main_atlas"
   texture: "/main/main_atlas.atlas"
@@ -42,7 +42,7 @@ nodes {
   }
   type: TYPE_BOX
   blend_mode: BLEND_MODE_ALPHA
-  texture: "main_atlas/menu"
+  texture: "main_atlas/menu_lose"
   id: "box"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -99,8 +99,8 @@ nodes {
   }
   type: TYPE_BOX
   blend_mode: BLEND_MODE_ALPHA
-  texture: "main_atlas/play_btn"
-  id: "Btn_Play"
+  texture: "main_atlas/menu_btn"
+  id: "Btn_Menu"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
   pivot: PIVOT_CENTER

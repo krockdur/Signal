@@ -3,10 +3,12 @@ function init(self)
 	
 	
 	msg.post("/gui#game_gui", "disable")
-	msg.post("/gui#menu_gui", "enable")
-	-- msg.post("#game_proxy", "load")
-
 	
+	msg.post("/gui#loose_gui", "disable")
+	
+	msg.post("/gui#menu_gui", "enable")
+
+	msg.post(".", "acquire_input_focus")
 end
 
 function final(self)
@@ -45,9 +47,24 @@ function on_message(self, message_id, message, sender)
 	if (message_id == hash("play_game")) then
 
 		msg.post("/gui#menu_gui", "disable")
-		msg.post("/gui#game_gui", "enalble")
+		msg.post("/gui#loose_gui", "disable")
+		
+		msg.post("/gui#game_gui", "enable")
 		
 		msg.post("#game_proxy", "load")
+	end
+
+	-- lose game
+	if (message_id == hash("lose_game")) then
+
+		msg.post("/gui#menu_gui", "disable")
+
+		msg.post("/gui#game_gui", "disable")
+
+		msg.post("#game_proxy", "unload")
+		
+		msg.post("/gui#loose_gui", "enable")
+		
 	end
 	
 end

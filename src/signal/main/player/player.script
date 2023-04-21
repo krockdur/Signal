@@ -1,7 +1,7 @@
 local config = require("main.defines")
 
 function init(self)
-
+	msg.post(".", "acquire_input_focus")
 	print("debug from init player")
 	
 	
@@ -64,7 +64,8 @@ function fixed_update(self, dt)
 	-- check player left time
 	if (self.time <= 0) then
 		-- player lose
-		
+		msg.post(".", "release_input_focus")
+		msg.post("main:/main#main", "lose_game")
 	end
 	
 end
@@ -73,7 +74,7 @@ function on_message(self, message_id, message, sender)
 
 	if (message_id == hash("load_lvl_1")) then
 		print("LOAD LVL 1")
-		msg.post(".", "acquire_input_focus")
+		
 		
 	end
 	
