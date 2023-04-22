@@ -1,3 +1,5 @@
+local config = require("main.defines")
+
 
 function reset_combo_ui(self)
 
@@ -36,7 +38,7 @@ end
 function init(self)
 	self.pie_time = gui.get_node("pie_time")
 
-	self.player_time = 30
+	self.player_time = config.MAX_PLAYER_TIME
 	-- 30s = 360°
 	-- 
 	gui.set_fill_angle(self.pie_time, 360)
@@ -54,7 +56,7 @@ function final(self)
 end
 
 function update(self, dt)
-	local angle = (self.player_time * 360) / 30
+	local angle = (self.player_time * 360) / config.MAX_PLAYER_TIME
 	gui.set_fill_angle(self.pie_time, angle)
 end
 

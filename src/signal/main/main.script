@@ -1,5 +1,5 @@
 function init(self)
-
+	msg.post(".", "acquire_input_focus")
 	
 	
 	msg.post("/gui#game_gui", "disable")
@@ -8,7 +8,7 @@ function init(self)
 	
 	msg.post("/gui#menu_gui", "enable")
 
-	msg.post(".", "acquire_input_focus")
+	
 end
 
 function final(self)
@@ -62,7 +62,8 @@ function on_message(self, message_id, message, sender)
 		msg.post("/gui#game_gui", "disable")
 
 		msg.post("#game_proxy", "unload")
-		
+
+		msg.post("/gui#loose_gui", "init")
 		msg.post("/gui#loose_gui", "enable")
 		
 	end

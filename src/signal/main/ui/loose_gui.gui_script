@@ -1,5 +1,7 @@
 function init(self)
 	msg.post(".", "acquire_input_focus")
+
+	print("FONCTION INIT LOSE")
 end
 
 function final(self)
@@ -22,11 +24,11 @@ end
 
 function on_input(self, action_id, action)
 	local btn_menu = gui.get_node("Btn_Menu")
-
+	print("tototo")
 	-- play button action
 	if action_id == hash("touch") and action.pressed then
 
-
+	
 		if gui.pick_node(btn_menu, action.x, action.y) then
 			--msg.post("/main#main", "play_game")
 
@@ -36,6 +38,7 @@ function on_input(self, action_id, action)
 
 	-- Mouse over play button
 	if gui.pick_node(btn_menu, action.x, action.y) then
+		
 		gui.set_texture(btn_menu, "main_atlas")
 		gui.play_flipbook(btn_menu, "menu_btn_over")
 	else

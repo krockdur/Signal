@@ -10,7 +10,7 @@ function init(self)
 	self.agree_to_shoot = true
 
 	-- life time in seconds
-	self.time = 30
+	self.time = config.MAX_PLAYER_TIME
 
 	self.score_value = 0
 
@@ -28,7 +28,7 @@ end
 
 function final(self)
 
-	-- msg.post(".", "release_input_focus")	
+	msg.post(".", "release_input_focus")	
 end
 
 
@@ -163,7 +163,7 @@ function check_if_combo(self)
 	self.enemies_dead_tab[3] == "yellow" and
 	self.enemies_dead_tab[4] == "white" and
 	self.enemies_dead_tab[5] == "red") then
-		self.time = 30
+		self.time = config.MAX_PLAYER_TIME
 		self.enemies_dead_tab = {}
 	end
 	
@@ -201,7 +201,7 @@ function on_input(self, action_id, action)
 				msg.post("main:/gui#game_gui", "player_nb_bombs", { player_nb_bombs = self.number_of_bombs} )
 				
 				-- a bomb heal the player
-				self.time = 30
+				self.time = config.MAX_PLAYER_TIME
 			end
 		end
 		
