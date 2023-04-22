@@ -63,8 +63,20 @@ function on_message(self, message_id, message, sender)
 
 		msg.post("#game_proxy", "unload")
 
-		msg.post("/gui#loose_gui", "init")
+		--msg.post("/gui#loose_gui", "init")
+		msg.post("/gui#loose_gui", "init_lose_gui")
 		msg.post("/gui#loose_gui", "enable")
+		
+	end
+
+	-- return to menu
+	if (message_id == hash("return_menu")) then
+
+		--msg.post("#game_proxy", "unload")
+		msg.post("/gui#loose_gui", "disable")
+		msg.post("/gui#game_gui", "disable")
+		msg.post("/gui#menu_gui", "init_menu_gui")
+		msg.post("/gui#menu_gui", "enable")
 		
 	end
 	

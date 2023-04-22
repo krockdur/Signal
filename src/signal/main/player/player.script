@@ -23,6 +23,8 @@ function init(self)
 
 	-- update ui
 	msg.post("main:/gui#game_gui", "player_nb_bombs", { player_nb_bombs = self.number_of_bombs} )
+	msg.post("main:/gui#game_gui", "up_score", {score_value = self.score_value})
+	msg.post("main:/gui#game_gui", "player_combo_table", { player_combo_table = self.enemies_dead_tab} )
 	
 end
 
@@ -41,6 +43,12 @@ end
 local shot_time = 0
 local life_time = 0
 function fixed_update(self, dt)
+
+	if (self.time > config.MAX_PLAYER_TIME) then
+		self.time = config.MAX_PLAYER_TIME
+	end
+
+	
 	--
 	shot_time = shot_time + dt
 	--
@@ -111,7 +119,12 @@ function on_message(self, message_id, message, sender)
 	end
 
 	if (message_id == hash("collision_response") and message.other_group == hash("shot_enemy")) then
-		self.time = self.time - 1
+		self.time = self.time - config.TIME_LOSE_PER_HURT
+		sound.play("/sound#sound_hurt_1")
+	end
+
+	if (message_id == hash("enemy_hurt_earth")) then
+		self.time = self.time - config.TIME_LOSE_PER_EARTH_HURT
 	end
 	
 end
@@ -184,6 +197,7 @@ function on_input(self, action_id, action)
 	-- if left click then fire !
 	if(action_id == hash("touch") and self.agree_to_shoot == true) then
 		factory.create("#rocket_factory", go.get_position())
+		sound.play("/sound#sound_shoot_1")
 	end
 
 	-- if right click then bomb !
@@ -191,6 +205,8 @@ function on_input(self, action_id, action)
 		if (action.released) then
 			if (self.number_of_bombs > 0) then
 				self.number_of_bombs = self.number_of_bombs - 1
+				-- bomb sound
+				sound.play("/sound#sound_explosion_1")
 				-- create bomb animation		
 				factory.create("#factory_create_bomb_animation", go.get_position())
 				

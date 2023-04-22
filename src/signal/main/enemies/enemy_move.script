@@ -2,13 +2,20 @@
 local config = require("main.defines")
 
 go.property("who", 1)
+go.property("hard", 0)
 
 function init(self)
 	self.pos = go.get_position()
-	self.life = 3
+	self.life = 0
 	self.shot_time = 0
 	self.time_between_shot = 0
 
+	if (self.hard == 0) then
+		self.life = 3
+	elseif (self.hard == 1) then
+		self.life = 10
+	end
+	
 	if self.who == config.TYPE_ENEMY_YELLOW then
 		self.time_between_shot = 1
 	elseif self.who == config.TYPE_ENEMY_GREEN then
@@ -53,6 +60,13 @@ function fixed_update(self, dt)
 			factory.create("#enemy_shot_factory", self.pos)
 		end
 	end
+
+	-- hurt earth
+	if (self.pos.y < 0) then
+		sound.play("/sound#sound_hurt_earth")
+		msg.post("/player#player", "enemy_hurt_earth")
+		go.delete()
+	end
 	
 end
 
@@ -60,12 +74,13 @@ function on_message(self, message_id, message, sender)
 
 	-- if rocket collision
 	if (message_id == hash("boom")) then
+		sound.play("/sound#sound_enemy_hurt")
 		self.life = self.life - 1
 		-- enemy dead :
 		if (self.life == 0) then
 			-- delete and send color to player
 			go.delete()
-
+			sound.play("/sound#sound_enemy_destroy")
 			msg.post("/player#player", "enemy_destroyed", { type_enemy = self.who })
 
 		end

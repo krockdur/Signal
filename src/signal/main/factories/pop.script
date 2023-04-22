@@ -4,7 +4,7 @@ function init(self)
 
 	-- 0 40 80 120 160 200 240 280 320 360 400 440 480 520 560 600
 	
-	self.pos = vmath.vector3(0, 800, 0)
+	self.pos = vmath.vector3(0, 900, 0)
 
 	self.spawn_enemies = {}
 	
@@ -19,26 +19,58 @@ function update(self, dt)
 end
 
 local time_to_pop = 0
+local time_to_pop_hard = 0
+local is_an_hard_enemy = 0
 function fixed_update(self, dt)
-	--print(go.get("/enemies/enemy_red#sprite_red", "size"))
+
+	-- timer to pop an hard enemy
+
+	time_to_pop_hard = time_to_pop_hard + dt
+	if (time_to_pop_hard > config.TIME_BETWEEN_ENEMY_POP_HARD) then
+		print("-- HARD ENEMY -- ")
+		is_an_hard_enemy = 1
+		time_to_pop_hard = 0
+	end
+	
+	-- timer pop an enemy
 	time_to_pop = time_to_pop + dt
-	if(time_to_pop > config.TIME_BETWEEN_POP) then
+	if(time_to_pop > config.TIME_BETWEEN_ENEMY_POP) then
 		-- pop an enemy
 		local pos_on_grid = math.random(0, 15)
 		self.pos.x = pos_on_grid * config.ENEMY_WIDTH + config.ENEMY_WIDTH / 2
 
 		local type_enemy = math.random(1, 4)
 		if (type_enemy == 1) then
-			table.insert(self.spawn_enemies, factory.create("#factory_enemy_yellow", self.pos, nil, { who = config.TYPE_ENEMY_YELLOW }, nil))
+			if (is_an_hard_enemy == 0) then	
+				table.insert(self.spawn_enemies, factory.create("#factory_enemy_yellow", self.pos, nil, { who = config.TYPE_ENEMY_YELLOW, hard = is_an_hard_enemy }, nil))
+			elseif(is_an_hard_enemy == 1) then
+				table.insert(self.spawn_enemies, factory.create("#factory_enemy_yellow", self.pos, nil, { who = config.TYPE_ENEMY_YELLOW, hard = is_an_hard_enemy }, vmath.vector3(2,2,1)))
+				is_an_hard_enemy = 0
+			end
 		end
 		if (type_enemy == 2) then
-			table.insert(self.spawn_enemies, factory.create("#factory_enemy_green", self.pos, nil, { who = config.TYPE_ENEMY_GREEN }, nil))
+			if (is_an_hard_enemy == 0) then	
+				table.insert(self.spawn_enemies, factory.create("#factory_enemy_green", self.pos, nil, { who = config.TYPE_ENEMY_GREEN, hard = is_an_hard_enemy }, nil))
+			elseif(is_an_hard_enemy == 1) then
+				table.insert(self.spawn_enemies, factory.create("#factory_enemy_green", self.pos, nil, { who = config.TYPE_ENEMY_GREEN, hard = is_an_hard_enemy }, vmath.vector3(2,2,1)))
+				is_an_hard_enemy = 0
+			end
 		end
 		if (type_enemy == 3) then
-			table.insert(self.spawn_enemies, factory.create("#factory_enemy_white", self.pos, nil, { who = config.TYPE_ENEMY_WHITE }, nil))
+			if (is_an_hard_enemy == 0) then	
+				table.insert(self.spawn_enemies, factory.create("#factory_enemy_white", self.pos, nil, { who = config.TYPE_ENEMY_WHITE, hard = is_an_hard_enemy }, nil))
+			elseif(is_an_hard_enemy == 1) then
+				table.insert(self.spawn_enemies, factory.create("#factory_enemy_white", self.pos, nil, { who = config.TYPE_ENEMY_WHITE, hard = is_an_hard_enemy }, vmath.vector3(2,2,1)))
+				is_an_hard_enemy = 0
+			end
 		end
 		if (type_enemy == 4) then
-			table.insert(self.spawn_enemies, factory.create("#factory_enemy_red", self.pos, nil,  { who = config.TYPE_ENEMY_RED }, nil))
+			if (is_an_hard_enemy == 0) then	
+				table.insert(self.spawn_enemies, factory.create("#factory_enemy_red", self.pos, nil,  { who = config.TYPE_ENEMY_RED, hard = is_an_hard_enemy }, nil))
+			elseif(is_an_hard_enemy == 1) then
+				table.insert(self.spawn_enemies, factory.create("#factory_enemy_red", self.pos, nil, { who = config.TYPE_ENEMY_RED, hard = is_an_hard_enemy }, vmath.vector3(2,2,1)))
+				is_an_hard_enemy = 0
+			end
 		end
 	
 		time_to_pop = 0
