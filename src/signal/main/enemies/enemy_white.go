@@ -82,7 +82,7 @@ embedded_components {
 embedded_components {
   id: "enemy_shot_factory"
   type: "factory"
-  data: "prototype: \"/main/enemies/enemy_green.go\"\n"
+  data: "prototype: \"/main/enemies/shot_enemy.go\"\n"
   "load_dynamically: false\n"
   "dynamic_prototype: false\n"
   ""

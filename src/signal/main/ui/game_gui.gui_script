@@ -1,7 +1,11 @@
 local config = require("main.defines")
 
 
+
+
 function reset_combo_ui(self)
+
+
 
 	gui.set_visible(gui.get_node("box_cb_green_p1"), false)
 	gui.set_visible(gui.get_node("box_cb_yellow_p1"), false)
@@ -35,7 +39,13 @@ function reset_combo_ui(self)
 end
 
 
+
 function init(self)
+
+	self.active_combo_lbl = false
+	gui.set_visible(gui.get_node("text_lbl_combo"), false)
+
+	
 	self.pie_time = gui.get_node("pie_time")
 
 	self.player_time = config.MAX_PLAYER_TIME
@@ -55,12 +65,36 @@ function final(self)
 
 end
 
+
+local timer_show_comb_lbl = 0
 function update(self, dt)
+
+	if (self.active_combo_lbl == true) then
+		timer_show_comb_lbl = timer_show_comb_lbl + dt
+
+		if (timer_show_comb_lbl >= 1) then
+			timer_show_comb_lbl = 0
+			self.active_combo_lbl = false
+		end
+	end
+
+	if (self.active_combo_lbl == true) then
+		gui.set_visible(gui.get_node("text_lbl_combo"), true)
+	else
+		gui.set_visible(gui.get_node("text_lbl_combo"), false)
+	end
+	
 	local angle = (self.player_time * 360) / config.MAX_PLAYER_TIME
 	gui.set_fill_angle(self.pie_time, angle)
 end
 
 function on_message(self, message_id, message, sender)
+
+	if (message_id == hash("active_combo")) then
+		gui.set_visible(gui.get_node("text_lbl_combo"), false)
+		self.active_combo_lbl = true
+	end
+	
 	if (message_id == hash("player_time")) then
 		self.player_time = message.player_time
 	end

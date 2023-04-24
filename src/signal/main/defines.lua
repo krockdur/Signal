@@ -22,4 +22,6 @@ config.TYPE_ENEMY_RED = 4
 
 config.MAX_PLAYER_TIME = 30
 
+config.BONUS_SHOOT_1_LENGTH = 10
+
 return config

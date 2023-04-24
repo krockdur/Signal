@@ -20,6 +20,8 @@ function init(self)
 	-- this is to check if there is a combo
 	self.enemies_dead_tab = { }
 
+	self.active_boost_shoot_1 = false
+
 
 	-- update ui
 	msg.post("main:/gui#game_gui", "player_nb_bombs", { player_nb_bombs = self.number_of_bombs} )
@@ -42,13 +44,21 @@ end
 
 local shot_time = 0
 local life_time = 0
+local bonus_shoot_time = 0
 function fixed_update(self, dt)
 
 	if (self.time > config.MAX_PLAYER_TIME) then
 		self.time = config.MAX_PLAYER_TIME
 	end
 
-	
+	if (self.active_boost_shoot_1 == true) then
+		bonus_shoot_time = bonus_shoot_time + dt
+
+		if (bonus_shoot_time >= config.BONUS_SHOOT_1_LENGTH) then
+			bonus_shoot_time = 0
+			self.active_boost_shoot_1 = false
+		end
+	end
 	--
 	shot_time = shot_time + dt
 	--
@@ -142,33 +152,69 @@ function insert_enemy_in_table(self, color)
 end
 
 function check_if_combo(self)
+	------------------------------------------
 	-- combo bomb
 	if( self.enemies_dead_tab[1] == "red" and self.enemies_dead_tab[2] == "white" and self.enemies_dead_tab[3] == "red") then
 		
 		self.number_of_bombs = self.number_of_bombs + 1
+		sound.play("/sound#sound_power_up")
+		
 		if self.number_of_bombs > 3 then self.number_of_bombs = 3 end
 		self.enemies_dead_tab = {}
 		-- update ui
 		msg.post("main:/gui#game_gui", "player_nb_bombs", { player_nb_bombs = self.number_of_bombs} )
+		msg.post("main:/gui#game_gui", "active_combo")
 			
 	elseif( self.enemies_dead_tab[2] == "red" and self.enemies_dead_tab[3] == "white" and self.enemies_dead_tab[4] == "red") then
 			
 		self.number_of_bombs = self.number_of_bombs + 1
+		sound.play("/sound#sound_power_up")
+		
 		if self.number_of_bombs > 3 then self.number_of_bombs = 3 end
 		self.enemies_dead_tab = {}
 		-- update ui
 		msg.post("main:/gui#game_gui", "player_nb_bombs", { player_nb_bombs = self.number_of_bombs} )
+		msg.post("main:/gui#game_gui", "active_combo")
 		
 	elseif( self.enemies_dead_tab[3] == "red" and self.enemies_dead_tab[4] == "white" and self.enemies_dead_tab[5] == "red") then
 			
 		self.number_of_bombs = self.number_of_bombs + 1
+		sound.play("/sound#sound_power_up")
+		
 		if self.number_of_bombs > 3 then self.number_of_bombs = 3 end
 		self.enemies_dead_tab = {}
 		-- update ui
 		msg.post("main:/gui#game_gui", "player_nb_bombs", { player_nb_bombs = self.number_of_bombs} )
+		msg.post("main:/gui#game_gui", "active_combo")
 			
 	end
+	
+	------------------------------------------
+	-- combo fire shoot 1
 
+	if( self.enemies_dead_tab[1] == "yellow" and self.enemies_dead_tab[2] == "yellow" and self.enemies_dead_tab[3] == "red") then
+
+		sound.play("/sound#sound_power_up")
+		self.active_boost_shoot_1 = true
+		self.enemies_dead_tab = {}
+		msg.post("main:/gui#game_gui", "active_combo")
+
+	elseif( self.enemies_dead_tab[2] == "yellow" and self.enemies_dead_tab[3] == "yellow" and self.enemies_dead_tab[4] == "red") then
+
+		sound.play("/sound#sound_power_up")
+		self.active_boost_shoot_1 = true
+		self.enemies_dead_tab = {}
+		msg.post("main:/gui#game_gui", "active_combo")
+
+	elseif( self.enemies_dead_tab[3] == "yellow" and self.enemies_dead_tab[4] == "yellow" and self.enemies_dead_tab[5] == "red") then
+
+		sound.play("/sound#sound_power_up")
+		self.active_boost_shoot_1 = true
+		self.enemies_dead_tab = {}
+		msg.post("main:/gui#game_gui", "active_combo")
+
+	end
+	------------------------------------------
 	-- combo time
 	if( 
 	self.enemies_dead_tab[1] == "yellow" and
@@ -176,8 +222,10 @@ function check_if_combo(self)
 	self.enemies_dead_tab[3] == "yellow" and
 	self.enemies_dead_tab[4] == "white" and
 	self.enemies_dead_tab[5] == "red") then
+		sound.play("/sound#sound_power_up")
 		self.time = config.MAX_PLAYER_TIME
 		self.enemies_dead_tab = {}
+		msg.post("main:/gui#game_gui", "active_combo")
 	end
 	
 end
@@ -191,12 +239,24 @@ function on_input(self, action_id, action)
 
 	-- tests	
 	if(action_id == hash("toto")) then
-		print("coucou")
+		msg.post("/enemies_pop#pop", "debug")
 	end
 
 	-- if left click then fire !
 	if(action_id == hash("touch") and self.agree_to_shoot == true) then
-		factory.create("#rocket_factory", go.get_position())
+
+		local vector_fire_position = go.get_position()
+		-- center
+		factory.create("#rocket_factory", vector_fire_position)
+
+		if(self.active_boost_shoot_1 == true) then
+			-- left
+			factory.create("#rocket_factory", vmath.vector3(vector_fire_position.x - 25, vector_fire_position.y, vector_fire_position.z))
+
+			-- right
+			factory.create("#rocket_factory", vmath.vector3(vector_fire_position.x + 25, vector_fire_position.y, vector_fire_position.z))
+		end
+		
 		sound.play("/sound#sound_shoot_1")
 	end
 
