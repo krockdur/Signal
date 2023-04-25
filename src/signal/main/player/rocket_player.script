@@ -30,7 +30,32 @@ end
 
 function on_message(self, message_id, message, sender)
 	if (message_id == hash("collision_response")) then
-		msg.post(message.other_id, "boom")
+
+		if (message.other_group == hash("boss_target_1")) then
+			
+			msg.post(message.other_id, "boom_boss_target_1")
+			
+		elseif (message.other_group == hash("boss_target_2")) then
+			
+			msg.post(message.other_id, "boom_boss_target_2")
+			
+		elseif(message.other_group == hash("boss_target_3")) then
+			
+			msg.post(message.other_id, "boom_boss_target_3")
+			
+		elseif(message.other_group == hash("boss_target_4")) then
+			
+			msg.post(message.other_id, "boom_boss_target_4")
+			
+		elseif(message.other_group == hash("boss_target_5")) then
+			
+			msg.post(message.other_id, "boom_boss_target_5")
+		else
+			
+			msg.post(message.other_id, "boom")
+			
+		end
+
 		explode(self)
 	end
 end

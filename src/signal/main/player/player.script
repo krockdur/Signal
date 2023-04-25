@@ -119,6 +119,10 @@ function on_message(self, message_id, message, sender)
 			self.time = self.time + 2
 			self.score_value = self.score_value + 4
 		end
+		if ( message.type_enemy == config.TYPE_ENEMY_BOSS) then
+			self.time = self.time + 10
+			self.score_value = self.score_value + 10
+		end
 
 		msg.post("main:/gui#game_gui", "up_score", {score_value = self.score_value})
 		

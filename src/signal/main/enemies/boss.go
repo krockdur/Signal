@@ -34,7 +34,7 @@ embedded_components {
   }
 }
 embedded_components {
-  id: "target_1"
+  id: "sprite_target_1"
   type: "sprite"
   data: "tile_set: \"/main/main_atlas.atlas\"\n"
   "default_animation: \"boss_target_red\"\n"
@@ -61,8 +61,8 @@ embedded_components {
   "mass: 0.0\n"
   "friction: 0.1\n"
   "restitution: 0.5\n"
-  "group: \"default\"\n"
-  "mask: \"default\"\n"
+  "group: \"boss_target_1\"\n"
+  "mask: \"rockets\"\n"
   "embedded_collision_shape {\n"
   "  shapes {\n"
   "    shape_type: TYPE_BOX\n"
@@ -102,7 +102,7 @@ embedded_components {
   }
 }
 embedded_components {
-  id: "target_5"
+  id: "sprite_target_5"
   type: "sprite"
   data: "tile_set: \"/main/main_atlas.atlas\"\n"
   "default_animation: \"boss_target_red\"\n"
@@ -122,7 +122,7 @@ embedded_components {
   }
 }
 embedded_components {
-  id: "target_2"
+  id: "sprite_target_2"
   type: "sprite"
   data: "tile_set: \"/main/main_atlas.atlas\"\n"
   "default_animation: \"boss_target_red\"\n"
@@ -142,7 +142,7 @@ embedded_components {
   }
 }
 embedded_components {
-  id: "target_3"
+  id: "sprite_target_3"
   type: "sprite"
   data: "tile_set: \"/main/main_atlas.atlas\"\n"
   "default_animation: \"boss_target_red\"\n"
@@ -162,7 +162,7 @@ embedded_components {
   }
 }
 embedded_components {
-  id: "target_4"
+  id: "sprite_target_4"
   type: "sprite"
   data: "tile_set: \"/main/main_atlas.atlas\"\n"
   "default_animation: \"boss_target_red\"\n"
@@ -189,8 +189,8 @@ embedded_components {
   "mass: 0.0\n"
   "friction: 0.1\n"
   "restitution: 0.5\n"
-  "group: \"default\"\n"
-  "mask: \"default\"\n"
+  "group: \"boss_target_5\"\n"
+  "mask: \"rockets\"\n"
   "embedded_collision_shape {\n"
   "  shapes {\n"
   "    shape_type: TYPE_BOX\n"
@@ -237,8 +237,8 @@ embedded_components {
   "mass: 0.0\n"
   "friction: 0.1\n"
   "restitution: 0.5\n"
-  "group: \"default\"\n"
-  "mask: \"default\"\n"
+  "group: \"boss_target_2\"\n"
+  "mask: \"rockets\"\n"
   "embedded_collision_shape {\n"
   "  shapes {\n"
   "    shape_type: TYPE_BOX\n"
@@ -285,8 +285,8 @@ embedded_components {
   "mass: 0.0\n"
   "friction: 0.1\n"
   "restitution: 0.5\n"
-  "group: \"default\"\n"
-  "mask: \"default\"\n"
+  "group: \"boss_target_3\"\n"
+  "mask: \"rockets\"\n"
   "embedded_collision_shape {\n"
   "  shapes {\n"
   "    shape_type: TYPE_BOX\n"
@@ -333,8 +333,8 @@ embedded_components {
   "mass: 0.0\n"
   "friction: 0.1\n"
   "restitution: 0.5\n"
-  "group: \"default\"\n"
-  "mask: \"default\"\n"
+  "group: \"boss_target_4\"\n"
+  "mask: \"rockets\"\n"
   "embedded_collision_shape {\n"
   "  shapes {\n"
   "    shape_type: TYPE_BOX\n"

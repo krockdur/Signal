@@ -20,6 +20,7 @@ config.TYPE_ENEMY_YELLOW = 1
 config.TYPE_ENEMY_GREEN = 2
 config.TYPE_ENEMY_WHITE = 3
 config.TYPE_ENEMY_RED = 4
+config.TYPE_ENEMY_BOSS = 5
 
 config.MAX_PLAYER_TIME = 30
 
