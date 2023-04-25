@@ -9,6 +9,7 @@ local config = {}
 config.ENEMY_WIDTH = 40
 config.TIME_BETWEEN_ENEMY_POP = 1.2
 config.TIME_BETWEEN_ENEMY_POP_HARD = 3.5
+config.TIME_BETWEEN_BOSS_POP = 5
 
 config.TIME_LOSE_PER_HURT = 3
 config.TIME_LOSE_PER_EARTH_HURT = 8
