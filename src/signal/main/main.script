@@ -64,7 +64,7 @@ function on_message(self, message_id, message, sender)
 		msg.post("#game_proxy", "unload")
 
 		--msg.post("/gui#loose_gui", "init")
-		msg.post("/gui#loose_gui", "init_lose_gui")
+		msg.post("/gui#loose_gui", "init_lose_gui", {score = message.score})
 		msg.post("/gui#loose_gui", "enable")
 		
 	end

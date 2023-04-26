@@ -83,7 +83,7 @@ function fixed_update(self, dt)
 	if (self.time <= 0) then
 		-- player lose
 		msg.post(".", "release_input_focus")
-		msg.post("main:/main#main", "lose_game")
+		msg.post("main:/main#main", "lose_game", {score = self.score_value} )
 	end
 	
 end
@@ -101,22 +101,22 @@ function on_message(self, message_id, message, sender)
 	if (message_id == hash("enemy_destroyed")) then
 		if ( message.type_enemy == config.TYPE_ENEMY_YELLOW) then
 			insert_enemy_in_table(self, "yellow")
-			self.time = self.time + 0.5
+			self.time = self.time + 1
 			self.score_value = self.score_value + 1
 		end
 		if ( message.type_enemy == config.TYPE_ENEMY_GREEN) then
 			insert_enemy_in_table(self, "green")
-			self.time = self.time + 1
+			self.time = self.time + 2
 			self.score_value = self.score_value + 2
 		end
 		if ( message.type_enemy == config.TYPE_ENEMY_WHITE) then
 			insert_enemy_in_table(self, "white")
-			self.time = self.time + 1.5
+			self.time = self.time + 1
 			self.score_value = self.score_value + 3
 		end
 		if ( message.type_enemy == config.TYPE_ENEMY_RED) then
 			insert_enemy_in_table(self, "red")
-			self.time = self.time + 2
+			self.time = self.time + 3
 			self.score_value = self.score_value + 4
 		end
 		if ( message.type_enemy == config.TYPE_ENEMY_BOSS) then

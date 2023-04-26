@@ -54,7 +54,7 @@ function fixed_update(self, dt)
 
 		time_top_pop_boss = time_top_pop_boss + dt
 
-		if (time_top_pop_boss > 5) then
+		if (time_top_pop_boss > config.PRETIME_BOSS_POP) then
 		
 			factory.create("#factory_boss", vmath.vector3(320, 1200, 0))
 			launch_boss = false
@@ -143,6 +143,7 @@ function on_message(self, message_id, message, sender)
 		print("boss dead")
 		phase_boss = false
 		launch_boss = true
+		autorize_top_pop_enemies = true
 	end
 end
 

@@ -1,7 +1,7 @@
 function init(self)
 	msg.post(".", "acquire_input_focus")
-
-	print("FONCTION INIT LOSE")
+	self.score=0
+	gui.set_text(gui.get_node("lbl_score"), tostring(self.score))
 end
 
 function final(self)
@@ -11,13 +11,12 @@ function final(self)
 end
 
 function update(self, dt)
-	-- Add update code here
-	-- Learn more: https://defold.com/manuals/script/
-	-- Remove this function if not needed
+	gui.set_text(gui.get_node("lbl_score"), tostring(self.score))
 end
 
 function on_message(self, message_id, message, sender)
 	if (message_id == hash("init_lose_gui")) then
+		self.score = message.score
 		msg.post(".", "acquire_input_focus")
 	end
 	
